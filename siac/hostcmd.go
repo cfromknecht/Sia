@@ -17,8 +17,8 @@ var (
 		Run:   wrap(hostcmd),
 	}
 
-	hostConfigCmd = &cobra.Command{
-		Use:   "config [setting] [value]",
+	hostSetCmd = &cobra.Command{
+		Use:   "set [setting] [value]",
 		Short: "Modify host settings",
 		Long: `Modify host settings.
 Available settings:
@@ -31,9 +31,9 @@ Available settings:
 
 To configure the host to not accept new contracts, set acceptingcontracts
 to false, e.g.:
-	siac host config acceptingcontracts false
+	siac host set acceptingcontracts false
 `,
-		Run: wrap(hostconfigcmd),
+		Run: wrap(hostsetcmd),
 	}
 
 	hostAnnounceCmd = &cobra.Command{
@@ -47,7 +47,7 @@ Doing so will override the standard connectivity checks.`,
 	}
 )
 
-func hostconfigcmd(param, value string) {
+func hostsetcmd(param, value string) {
 	// convert price to hastings/byte/block
 	if param == "price" {
 		p, ok := new(big.Rat).SetString(value)
