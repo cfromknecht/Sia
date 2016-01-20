@@ -18,8 +18,9 @@ const (
 	// indicating that the odd Y coordinate should be chosen upon decompression.
 	ECHeaderCompressedOdd byte = 0x03
 
-	// ECHeaderUncompressed defines the header byte of an uncompressed EC point.
-	ECHeaderUncompressed byte = 0x04
+	// ECHeaderSerializedPublic defines the header byte of a serialized EC public
+	// key.
+	ECHeaderSerializedPublic byte = 0x04
 
 	// ECHeaderSerializedSecret defines the header byte of a serialized EC secret
 	// key.
@@ -75,7 +76,7 @@ func ComputeECPublic(rBytes []byte) *ECPublic {
 // Serialize returns the byte array representing an uncompressed EC public key.
 func (pub *ECPublic) Serialize() []byte {
 	// Signify that data is an uncompressed EC public key.
-	data := []byte{ECHeaderUncompressed}
+	data := []byte{ECHeaderSerializedPublic}
 
 	// Pad X and Y coordinates to ECCoordinateSize
 	padx := pad(pub.X.Bytes(), ECCoordinateSize)
@@ -97,7 +98,7 @@ func DeserializeECPublic(data []byte) (*ECPublic, error) {
 	}
 
 	// Verify correctness of header
-	if data[0] != ECHeaderUncompressed {
+	if data[0] != ECHeaderSerializedPublic {
 		return nil, ErrInvalidSerializedPublic
 	}
 
